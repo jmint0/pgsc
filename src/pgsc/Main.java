@@ -1,19 +1,24 @@
 package pgsc;
 
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
+import static org.bytedeco.javacpp.opencv_core.*;
+import static org.bytedeco.javacpp.opencv_imgproc.*;
+import static org.bytedeco.javacpp.opencv_imgcodecs.*;
 
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
-		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
-		Mat mat = Mat.eye(27, 54,CvType.CV_8UC1);
-		System.out.println("mat = " + mat.dump()  );
-		
-
+		String filename = "Ikea_Lady_Walking.jpg";
+		System.out.println(" ## Loading Image " + filename);
+        IplImage image = cvLoadImage(filename);
+        if (image != null) {
+        	System.out.println(" ## Smothing Image...");
+            cvSmooth(image, image);
+            System.out.println(" ## Saving Image...");
+            cvSaveImage(filename, image);
+            cvReleaseImage(image);
+        }
+        System.out.println(" ## Code Complete.");
 	}
 
 }
