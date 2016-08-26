@@ -41,89 +41,102 @@ public class Main {
 		if ( image == null ) {
 			System.out.println(" !! pixRead unable to open file");
 		} else {
-			System.out.println(" ## Image width: " + image.w());
-			System.out.println(" ## Image height: " + image.h());
+//			System.out.println(" ## Image width: " + image.w());
+//			System.out.println(" ## Image height: " + image.h());
 			api.SetImage(image);
 			
+			api.SetVariable("tessedit_char_whitelist", "CP1234567890");
 			api.SetRectangle(230, 35, 620, 86);
 			outText = api.GetUTF8Text();
 			strCP = outText.getString();
 			outText.putString("");
 
+			api.SetVariable("tessedit_char_whitelist", "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 			api.SetRectangle(37, 775, 996, 112);
 			outText = api.GetUTF8Text();
 			strName = outText.getString();
 			outText.putString("");
 		
+			api.SetVariable("tessedit_char_whitelist", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 			api.SetRectangle(35, 1029, 356, 72);
 			outText = api.GetUTF8Text();
 			strType = outText.getString();
 			outText.putString("");
 		
+			api.SetVariable("tessedit_char_whitelist", ".1234567890kg");
 			api.SetRectangle(403, 1029, 292, 72);
 			outText = api.GetUTF8Text();
 			strWeight = outText.getString();
 			outText.putString("");
 			
+			api.SetVariable("tessedit_char_whitelist", ".1234567890mk");
 			api.SetRectangle(713, 1029, 332, 72);
 			outText = api.GetUTF8Text();
 			strHeight = outText.getString();
 			outText.putString("");
 			
+			api.SetVariable("tessedit_char_whitelist", "1234567890");
 			api.SetRectangle(267, 1217, 352, 80);
 			outText = api.GetUTF8Text();
 			strStardust = outText.getString();
 			outText.putString("");
 			
+			api.SetVariable("tessedit_char_whitelist", "1234567890");
 			api.SetRectangle(717, 1217, 322, 80);
 			outText = api.GetUTF8Text();
 			strCandy = outText.getString();
 			outText.putString("");
 			
+			api.SetVariable("tessedit_char_whitelist", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 			api.SetRectangle(513, 1313, 524, 69);
 			outText = api.GetUTF8Text();
 			strCandyPokemon = outText.getString();
 			outText.putString("");
 			
+			api.SetVariable("tessedit_char_whitelist", "1234567890");
 			api.SetRectangle(595, 1441, 156, 50);
 			outText = api.GetUTF8Text();
 			strPowerupStardust = outText.getString();
 			outText.putString("");
 			
+			api.SetVariable("tessedit_char_whitelist", "1234567890");
 			api.SetRectangle(813, 1441, 158, 50);
 			outText = api.GetUTF8Text();
 			strPowerupCandy = outText.getString();
 			outText.putString("");
 			
+			api.SetVariable("tessedit_char_whitelist", "1234567890");
 			api.SetRectangle(813, 1599, 158, 50);
 			outText = api.GetUTF8Text();
 			strEvolveCandy = outText.getString();
 			outText.putString("");
 			
+			api.SetVariable("tessedit_char_whitelist", "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 			api.SetRectangle(63, 1823, 430, 66);
 			outText = api.GetUTF8Text();
 			strAttack1 = outText.getString();
 			outText.putString("");			
 			
+			api.SetVariable("tessedit_char_whitelist", "1234567890");
 			api.SetRectangle(657, 1823, 362, 60);
 			outText = api.GetUTF8Text();
 			strAttack1Damage = outText.getString();
 			outText.putString("");
 
 
-			System.out.print(strCP + ", ");
-			System.out.print(strName + ", ");
-			System.out.print(strType + ", ");
-			System.out.print(strWeight + ", ");
-			System.out.print(strHeight + ", ");
-			System.out.print(strStardust + ", ");
-			System.out.print(strCandy + ", ");
-			System.out.print(strCandyPokemon + ", ");
-			System.out.print(strPowerupStardust + ", ");
-			System.out.print(strPowerupCandy + ", ");
-			System.out.print(strEvolveCandy + ", ");
-			System.out.print(strAttack1 + ", ");
-			System.out.println(strAttack1Damage);
+			System.out.print(strCP.trim().trim() + ",");
+			System.out.print(strName.trim() + ",");
+			System.out.print(strType.trim() + ",");
+			System.out.print(strWeight.trim() + ",");
+			System.out.print(strHeight.trim() + ",");
+			System.out.print(strStardust.trim() + ",");
+			System.out.print(strCandy.trim() + ",");
+			System.out.print(strCandyPokemon.trim() + ",");
+			System.out.print(strPowerupStardust.trim() + ",");
+			System.out.print(strPowerupCandy.trim() + ",");
+			System.out.print(strEvolveCandy.trim() + ",");
+			System.out.print(strAttack1.trim() + ",");
+			System.out.println(strAttack1Damage.trim());
 			
 			outText.deallocate();
 		} // good image
