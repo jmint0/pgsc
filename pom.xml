@@ -20,22 +20,23 @@
   </build>
   <dependencies>
   	<dependency>
-  		<groupId>org.bytedeco</groupId>
-  		<artifactId>javacv</artifactId>
-  		<version>1.2</version>
+  		<groupId>org.bytedeco.javacpp-presets</groupId>
+  		<artifactId>tesseract</artifactId>
   		<scope>provided</scope>
+  		<version>3.04.01-1.2</version>
   	</dependency>
   </dependencies>
-  <dependencyManagement>
-  	<dependencies>
-  		<dependency>
-  			<groupId>org.bytedeco</groupId>
-  			<artifactId>jacacv</artifactId>
-  			<version>1.2</version>
-  		</dependency>
-  	</dependencies>
-  </dependencyManagement>
   <properties>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+  			<groupId>org.bytedeco.javacpp-presets</groupId>
+  			<artifactId>tesseract</artifactId>
+  			<scope>provided</scope>
+  			<version>3.04.01-1.2</version>
+  		</dependency>
+  	</dependencies>
+  </dependencyManagement>
 </project>
