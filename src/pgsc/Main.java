@@ -3,9 +3,15 @@ package pgsc;
 import static org.bytedeco.javacpp.lept.pixDestroy;
 import static org.bytedeco.javacpp.lept.pixRead;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.lept.PIX;
 import org.bytedeco.javacpp.tesseract.TessBaseAPI;
+
+import java.io.File;
 
 public class Main {
 	
@@ -31,10 +37,13 @@ public class Main {
 		System.out.println("Evolve Candy");
 	}
 	
-	protected static void parseOptions(String[] args) {
-		GetOpt go = new GetOpt("hl");
-		char c;
-		while ((c = go.getopt(args)) != 0) {
+	protected static List<String> parseOptions(String[] args) {
+		
+		GetOpt	go = new GetOpt("hl");
+		Map<String,String> optionsFound = go.parseArguments(args);
+		
+		for (String key : optionsFound.keySet()) {
+			char c = key.charAt(0);
 			switch (c) {
 			case 'h':
 				helpAndExit(0);
@@ -46,9 +55,11 @@ public class Main {
 				System.err.println("Unknown option in " +
 						args[go.getOptInd()-1]);
 				helpAndExit(0);
-			}
-		}
-	}
+			} // switch options
+		} // for all options
+		
+		return go.getFilenameList();
+	} // parseOptions
 
 	protected static void displayStats(String strFilename) {
 		BytePointer outText;
@@ -68,7 +79,7 @@ public class Main {
 	//	String	strAttack1 = "";
 	//	String	strAttack1Damage = "";
 		
-		System.out.println(" ## System.getenv(\"TESSDATA_PREFIX\") = " + System.getenv("TESSDATA_PREFIX"));
+//		System.out.println(" ## System.getenv(\"TESSDATA_PREFIX\") = " + System.getenv("TESSDATA_PREFIX"));
 		
 		TessBaseAPI api = new TessBaseAPI();
 		// Initialize tesseract-ocr with English, without specifying tessdata path
@@ -80,10 +91,10 @@ public class Main {
 		// Open input image with leptonica library
 		PIX image = pixRead(strFilename);
 		if ( image == null ) {
-			System.out.println(" !! pixRead unable to open file");
+			System.out.println(" !! pixRead unable to open file" + strFilename);
 		} else {
-	//		System.out.println(" ## Image width: " + image.w());
-	//		System.out.println(" ## Image height: " + image.h());
+//			System.out.println(" ## Image width: " + image.w());
+//			System.out.println(" ## Image height: " + image.h());
 			api.SetImage(image);
 			
 			// CP
@@ -201,20 +212,68 @@ public class Main {
 	//		System.out.println(strAttack1Damage.trim());
 			
 			outText.deallocate();
+			pixDestroy(image);
+
 		} // good image
 		
 		// Destroy used object and release memory
 		api.End();
-	
-		pixDestroy(image);
-			
+		api.close();
+				
 	} // displayStats
 
 	public static void main(String[] args) throws Exception {
 		
-		parseOptions(args);
-
-		displayStats("C:\\Users\\jminto\\Pictures\\Pokemon\\Screenshot_2016-07-28-15-41-29.png");
+		File	fileF;
+		List<String> listFiles;
+		listFiles = parseOptions(args);
+		
+//		System.out.println(" ## parsedOptions");
+		
+		if ( listFiles.size() < 1 ) {
+			listFiles.add(".");	// Set it for current directory if there are no file arguments
+//			System.out.println(" ## added current directory for default");
+		}
+		
+		for (String strFile : listFiles) {	// Check down through the list of files sent by the user
+			
+//			System.out.println(" ## trying to get a new file");
+			fileF = new File(strFile);
+//			System.out.println(" ## trying to open " + strFile);
+			if ( ( fileF == null ) || !fileF.exists() ){
+				System.err.println(" !! Could not open file " + strFile);
+			}
+			else 
+			{
+				if ( fileF.isDirectory() ) {
+				
+					File fileYaF;
+					
+//					System.out.println(" ## trying to list the contents of a directory");
+					
+					String[] dirs = new java.io.File(strFile).list(); // Get list of names
+					Arrays.sort(dirs);
+					for (String dir : dirs) {	
+//						System.out.println(" ## trying to review " + strFile + "\\" + dir);
+						fileYaF = new File(strFile + "\\" + dir);
+						if ( ( fileYaF == null ) || !fileYaF.exists() ) {
+							System.err.println(" !! Could not open file " + strFile + "\\" + dir);
+						}
+						else
+						{
+							if ( fileYaF.isFile() ) 
+								displayStats(strFile + "\\" + dir);
+						}
+					} // for each listing in a directory
+					
+				}
+				else
+				{
+					displayStats(strFile);
+				}
+			} // if not error on command line file argument
+				
+		} // for each command line file argument
 		
 	} // main
 
